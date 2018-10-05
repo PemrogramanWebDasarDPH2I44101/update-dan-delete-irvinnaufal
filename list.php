@@ -1,30 +1,37 @@
 <?php
-require_once("db.php");git 
+require_once("db.php");
 ?>
-<table border=1>
-    <thead>
-        <th>Nama</th>
-        <th>Nim</th>
-        <th>Tanggal Lahir</th>
-    </thead>
-    <tbody>
-<?php
-$sql    = "SELECT * FROM siswa";
-$result = mysqli_query($conn, $sql);
+<!DOCTYPE html>
+<head>
+    <title>LIST</title>
+</head>
+<body>
+    <table>
+        <tr align="left">
+            <th>Nim</th>
+            <th>Nama</th>
+            <th>Tanggal Lahir</th>
+            <th>Aksi</th>
+        </tr>
+       <?php
+            $sql = "SELECT * FROM siswa";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_num_rows($result);
+            if ($row > 0) {
+                while ($row = mysqli_fetch_array($result)) {
+                    $id = $row["nim"];
+                    echo "<tr>";
+                    echo "<td>" . $row["nim"] . "</td>";
+                    echo "<td>" . $row["nama"] . "</td>";
+                    echo "<td>" . $row["tgl_lahir"] . "</td>";
+                    echo "<td>" . "<a href ='formupdate.php?nim = $id'>Update</a> | <a href='delete.php?nim = $id'>Delete</a>" . "</td>";
+                    echo "</tr>";
+                }
+            }else {
+                echo "<tr><td colspan='4' align='center'>0 results.</td></tr>";
+            }
+        ?>
 
-if (mysqli_num_rows($result) > 0) {
-    // output data of each row
-    while($row = mysqli_fetch_assoc($result)) {
-        echo "<tr>";
-        echo "<td>" . $row["nama"]. "</td>"; 
-        echo "<td>" . $row["nim"]. "</td>";
-        echo "<td>" . $row["tgl_lahir"]. "</td>";
-        echo "</tr>";
-    }
-} else {
-    echo "0 results";
-}
-mysqli_close($conn);
-?> 
-    </tbody>
-</table>
+    </table>
+</body>
+</html>
